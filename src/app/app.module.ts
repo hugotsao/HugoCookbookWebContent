@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LeftPanelComponent } from './left-panel/left-panel.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LeftPanelComponent
   ],
   imports: [
     BrowserModule,

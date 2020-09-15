@@ -1,0 +1,27 @@
+#left-panel {
+    height: 100%;
+    width: 10%;
+    background-color: bisque;
+    border-style: solid;
+    border-color: black;
+}
+
+.text-center {
+    text-align: center;
+}
+
+a:visited {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
+a:active {
+  color: purple;
+  background-color: transparent;
+  text-decoration: underline;
+}
