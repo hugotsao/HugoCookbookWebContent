@@ -6,62 +6,29 @@ import { Article } from './article-type';
   providedIn: 'root'
 })
 export class LeftPanelServiceService {
-
-  constructor() { }
-
-  categories: Array<Category> = [
-    {
-      id: 1,
-      name: 'LeetCode'
-    },
-    {
-      id: 2,
-      name: 'Recipe'
-    },
-    {
-      id: 3,
-      name: 'Comparisons'
+  categories: Array<Category> | undefined
+  titles: Array<Article> | undefined
+  articleList: Map<string, Array<Article>> = new Map();
+  
+  constructor() { 
+    this.fetchData()
+  }
+  private fetchData() {
+    
+  }
+  
+  
+  getLeftPanelItems(): Map<string, Array<Article>> {
+    
+    if (this.categories && this.titles) {
+      this.titles.forEach(title => {
+        let key = this.getCategoryName(title.categoryId);
+        if (!(this.articleList.has(key))) {
+          this.articleList.set(key, []);
+        }
+        this.articleList.get(key).push(title);
+      })
     }
-  ]
-  articles: Array<Article> = [
-    {
-      id: 1,
-      title: 'LC0001',
-      categoryId: 1,
-      tags: ['Tree'],
-      ref: ['LC0002'],
-      DateCreation: new Date(),
-      DateLastModified: new Date()
-    },
-    {
-      id: 2,
-      title: 'LC0002',
-      categoryId: 1,
-      tags: ['Tree'],
-      ref: [],
-      DateCreation: new Date(),
-      DateLastModified: new Date()
-    },
-    {
-      id: 3,
-      title: 'Chinese Tea Eggs',
-      categoryId: 2,
-      tags: ['Tree'],
-      ref: [],
-      DateCreation: new Date(),
-      DateLastModified: new Date()
-    },
-  ]
-  articleList: Map<string, Array<object>> = new Map();
-
-  getLeftPanelItems(): Map<string, Array<object>> {
-    this.articles.forEach(article => {
-      let key = this.getCategoryName(article.categoryId);
-      if (!(this.articleList.has(key))) {
-        this.articleList.set(key, []);
-      }
-      this.articleList.get(key).push(article);
-    })
     return this.articleList;
   }
 

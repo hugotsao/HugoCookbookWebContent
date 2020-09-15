@@ -8,6 +8,7 @@ import { LeftPanelServiceService } from '../left-panel-service.service';
 })
 export class LeftPanelComponent implements OnInit {
   items;
+  showPanel: boolean;
   constructor(
     private leftPanelService: LeftPanelServiceService
   ) { }
@@ -17,6 +18,7 @@ export class LeftPanelComponent implements OnInit {
   }
 
   getItems() {
+    this.showPanel = false;
     this.items = this.leftPanelService.getLeftPanelItems();
   }
 

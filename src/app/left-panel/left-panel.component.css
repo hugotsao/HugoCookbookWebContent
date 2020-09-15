@@ -1,9 +1,9 @@
 #left-panel {
-    height: 100%;
     width: 10%;
     background-color: bisque;
     border-style: solid;
     border-color: black;
+    height: fit-content;
 }
 
 .text-center {
@@ -24,4 +24,9 @@ a:active {
   color: purple;
   background-color: transparent;
   text-decoration: underline;
+}
+img {
+  width: 100%;
+  margin: auto;
+  opacity: 0.15;
 }
