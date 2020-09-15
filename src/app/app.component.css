@@ -3,12 +3,13 @@
     width: 100%;
 }
 .left-panel {
+    border-right: solid;
     width: 10%;
+    height: 100vh;
     float: left;
-    border-right-style: solid;
-    border-color: black;
 }
 .display-panel {
-    margin-left: 10%;
-    width: 90%;    
+    height: 100vh;
+    margin-left: 11%;
+    float: left;
 }
