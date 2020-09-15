@@ -1,19 +1,17 @@
-<div id="left-panel">
-    <div *ngIf="showPanel; else loadDiv">
-        <div *ngFor="let item of this.items | keyvalue">
-            <div class="text-center" *ngIf="item.value.length >= 0">
-                <span><h3>{{ item.key + ' ' + item.value.length}}</h3></span>
-                <div *ngFor="let article of item.value">
-                    <nav>
-                        <a href="" (click)="getContent(article.title)">
-                            {{ article.title }}
-                        </a>
-                    </nav>
-                </div>
+<div *ngIf="!loading; else loadDiv">
+    <div *ngFor="let item of this.items | keyvalue">
+        <div class="text-center" *ngIf="item.value.length >= 0">
+            <span><h3>{{ item.key + ' ' + item.value.length}}</h3></span>
+            <div *ngFor="let article of item.value">
+                <nav>
+                    <a href="" (click)="getContent(article.id)">
+                        {{ article.title }}
+                    </a>
+                </nav>
             </div>
         </div>
     </div>
-    <ng-template #loadDiv>
-        <img src="assets/img/colorload.gif">
-    </ng-template>
 </div>
+<ng-template #loadDiv>
+    <img src="assets/img/colorload.gif">
+</ng-template>

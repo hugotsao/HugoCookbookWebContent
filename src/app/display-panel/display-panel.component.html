@@ -1,0 +1,7 @@
+<div *ngIf="!loading; else loadBlock">
+    <div class="title"><h2>{{ title | titlecase }}</h2></div>
+    <article class="content" [innerHTML]="content"></article>
+    </div>
+<ng-template #loadBlock>
+    <img src="assets/img/colorload.gif">
+</ng-template>

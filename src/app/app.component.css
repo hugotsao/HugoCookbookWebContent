@@ -1,0 +1,14 @@
+.main {
+    overflow: hidden;
+    width: 100%;
+}
+.left-panel {
+    width: 10%;
+    float: left;
+    border-right-style: solid;
+    border-color: black;
+}
+.display-panel {
+    margin-left: 10%;
+    width: 90%;    
+}

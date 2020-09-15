@@ -1,13 +1,5 @@
-#left-panel {
-    width: 10%;
-    background-color: bisque;
-    border-style: solid;
-    border-color: black;
-    height: fit-content;
-}
-
 .text-center {
-    text-align: center;
+  text-align: center;
 }
 
 a:visited {
@@ -27,6 +19,5 @@ a:active {
 }
 img {
   width: 100%;
-  margin: auto;
-  opacity: 0.15;
+  opacity: 0.2;
 }
