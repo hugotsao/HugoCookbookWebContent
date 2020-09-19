@@ -1,5 +1,6 @@
 FROM nginx:mainline-alpine
-COPY nginx.conf /etc/nginx/hugoqrbook.conf
-RUN mkdir -p /var/www/HugoQRBookWebContent
+RUN addgroup -S hugo && adduser -S hugo -G hugo
+USER hugo
+COPY nginx.conf /home/hugo/hugoqrbook.conf
 COPY dist/HugoQRBookWebContent /var/www/HugoQRBookWebContent
-CMD ["nginx", "-c", "/etc/nginx/hugoqrbook.conf", "-g", "daemon off;"]
+CMD ["nginx", "-c", "/home/hugo/hugoqrbook.conf", "-g", "daemon off;"]
