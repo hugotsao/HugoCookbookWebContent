@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'HugoCookbookWebContent'`, () => {
+  it(`should have as title 'HugoQRBookWebContent'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('HugoCookbookWebContent');
+    expect(app.title).toEqual('HugoQRBookWebContent');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('HugoCookbookWebContent app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('HugoQRBookWebContent app is running!');
   });
 });
