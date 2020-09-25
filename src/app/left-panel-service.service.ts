@@ -36,7 +36,6 @@ export class LeftPanelServiceService {
           }
           toc.get(key).push(art);
         }
-        console.log(`toc len ${toc.size}`);
         this.tableOfContent.next(toc);
       })
     })
