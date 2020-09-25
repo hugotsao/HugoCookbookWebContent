@@ -1,39 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Category } from './category-type';
 import { Article } from './article-type';
+import { HttpClient } from '@angular/common/http';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeftPanelServiceService {
-  categories: Array<Category> | undefined
-  titles: Array<Article> | undefined
-  articleList: Map<string, Array<Article>> = new Map();
+  categories: Subject<Category[]> = new Subject();
+  titles: Subject<Article[]> = new Subject();
+  articleList: Map<string, Article[]> = new Map();
+  tableOfContent: Subject<Map<string, Article[]>> = new Subject();
   
-  constructor() { 
-    this.fetchData()
+  api = "http://localhost:8080";
+  constructor(
+    private httpClient: HttpClient
+  ) {
   }
-  private fetchData() {
-    
+  getArticles(): Observable<any> {
+    return this.httpClient.get(`${this.api}/articles`);
   }
-  
-  
-  getLeftPanelItems(): Map<string, Array<Article>> {
-    
-    if (this.categories && this.titles) {
-      this.titles.forEach(title => {
-        let key = this.getCategoryName(title.categoryId);
-        if (!(this.articleList.has(key))) {
-          this.articleList.set(key, []);
-        }
-        this.articleList.get(key).push(title);
-      })
-    }
-    return this.articleList;
-  }
-
-  private getCategoryName(id: number): string{
-    return this.categories.filter(category => category.id === id).pop().name;
+  getCategories(): Observable<any>{
+    return this.httpClient.get<any>(`${this.api}/categories`);
   }
 }
 
