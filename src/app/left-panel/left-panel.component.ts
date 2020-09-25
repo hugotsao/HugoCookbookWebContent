@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./left-panel.component.css']
 })
 export class LeftPanelComponent implements OnInit {
-  toc: Observable<Map<string, Article[]>>;
+  toc: Map<string, Article[]>;
   titles: Article[];
   categories: Category[];
   loading: boolean;
@@ -19,18 +19,13 @@ export class LeftPanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getCategories();
-    this.getArticles();
+    this.getToc();
   }
-  getCategories() {
-    this.leftPanelService.getCategories().subscribe(
-      result => this.categories = result._embedded.categories
-    )
-  }
-  getArticles() {
-    this.leftPanelService.getArticles().subscribe(
-    result => this.titles = result._embedded.articles
-    )
+
+  getToc() {
+    this.leftPanelService.getToc().subscribe(
+      toc => this.toc = toc
+      );
   }
 
   getContent(articleId: number): void{

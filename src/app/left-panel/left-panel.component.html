@@ -1,12 +1,13 @@
-<div *ngFor="let category of this.categories">
-    <div class="text-center">
-        <span><h3>{{ category.name}}</h3></span>
-        <div *ngFor="let title of this.titles">
-            <div *ngIf="title.categoryId === category.categoryId">
-            
-                <a href="" (click)="getContent(title.id)">
-                    {{ title.title }}
-                </a>
+<div *ngIf="this.toc && this.toc.size > 0; else loadBlock">
+    <div *ngFor="let entry of this.toc | keyvalue">
+        <div *ngIf="entry.value.length > 0">
+            <span><h3>{{ entry.key }}</h3></span>
+            <div *ngFor="let title of entry.value">
+                {{ title.title }}
+            </div>
         </div>
     </div>
 </div>
+<ng-template #loadBlock>
+    <img src="assets/img/colorload.gif">
+</ng-template>
