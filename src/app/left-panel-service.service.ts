@@ -2,43 +2,83 @@ import { Injectable } from '@angular/core';
 import { Category } from './category-type';
 import { Article } from './article-type';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Observable, of } from 'rxjs';
-import { toASCII } from 'punycode';
+import { Observable, of, Observer, Subject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeftPanelServiceService {
-
-  tableOfContent: Subject<Map<string, Article[]>> = new Subject();
+  categories: Category[];
+  articles: Article[];
+  categorySubject: Subject<Category[]> = new Subject();
+  articleSubject: Subject<Article[]> = new Subject();
+  tableOfContent: Map<string, Article[]> = new Map();
   
   api = "http://localhost:8080";
   constructor(
     private httpClient: HttpClient
   ) {
   }
-  getArticles(): Observable<any> {
-    return this.httpClient.get(`${this.api}/articles`);
+
+  fetchCategories() {
+    if(!this.categories) {
+      this.httpClient.get<any>(`${this.api}/categories`).subscribe(
+        result => {
+          this.categories = result._embedded.categories;
+          this.categorySubject.next(result._embedded.categories);
+        }
+      )
+    }
   }
-  getCategories(): Observable<any>{
-    return this.httpClient.get<any>(`${this.api}/categories`);
+  getCategories(): Observable<Category[]> {
+    if (!this.categories) {
+      this.fetchCategories();
+    }
+    this.categorySubject.next(this.categories);
+    return this.categorySubject;
   }
 
+  fetchArticles() {
+    this.httpClient.get<any>(`${this.api}/articles`).subscribe(
+      result => {
+        this.articles = result._embedded.articles;
+        this.articleSubject.next(this.articles);
+      }
+    )
+  }
+  getArticles(): Observable<Article[]> {
+    if (!this.articles) {
+      this.fetchArticles();
+    }
+    this.articleSubject.next(this.articles);
+    return this.articleSubject;
+  }
+  
   getToc(): Observable<Map<string, Article[]>>{
     this.getCategories().subscribe(cats => {
       this.getArticles().subscribe(arts => {
-        const categories = cats._embedded.categories;
-        const toc: Map<string, Article[]> = new Map();
-        for (let art of arts._embedded.articles) {
-          const key = categories.filter(cat => art.categoryId === cat.categoryId).pop().name;
-          if(!toc.has(key)) {
-            toc.set(key, []);
-          }
-          toc.get(key).push(art);
+        if(cats && arts) {
+          this.transformToToc(cats, arts);
         }
-        this.tableOfContent.next(toc);
       })
     })
-    return this.tableOfContent;
+    return of(this.tableOfContent);
+  }
+
+  private transformToToc(cats: Category[], arts: Article[]){
+    
+    for (let cat of cats) {
+      for (let art of arts) {
+        const catName = art.categoryId === cat.categoryId ? cat.name : undefined;
+        if(catName) {
+          if(!this.tableOfContent.has(catName)){
+            this.tableOfContent.set(catName, []);
+          }
+          this.tableOfContent.get(catName).push(art);
+        }
+        
+      }
+    }
   }
 }
