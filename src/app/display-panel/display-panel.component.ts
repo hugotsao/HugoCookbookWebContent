@@ -1,40 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import * as marked from "marked";
 import { DisplayService } from '../display.service';
-import { ActivatedRoute ,ParamMap } from '@angular/router';
+import { DataStoreService } from '../data-store.service';
+import { ActivatedRoute } from '@angular/router';
+import { Article } from '../data-structures';
+
 @Component({
   selector: 'app-display-panel',
   templateUrl: './display-panel.component.html',
   styleUrls: ['./display-panel.component.css']
 })
 export class DisplayPanelComponent implements OnInit {
-  title: string;
+  article: Article;
   content: string;
-  
+  articleId: number;
   constructor(
     private displayService: DisplayService,
+    private dataStoreService: DataStoreService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.init();
-    this.content = marked('the content is a mark down content\n' + 
-    '1. point a\n' + 
-    '2. point b\n');
+    this.init();    
   }
   init() {
     this.route.paramMap.subscribe(paramMap => {
-      const articleId = +paramMap.get('articleId');
-      this.initTitle(articleId)
-
+      this.articleId = +paramMap.get('articleId');
+      this.getArticle();
+      
     })
   }
-  initTitle(articleId: number) {
-    this.displayService.getTitleFromId(articleId).subscribe(
-      title => this.title = title
-    )
+  getArticle() {
+    this.displayService.getArticleFromId(this.articleId).subscribe(
+      article => {
+        this.article = article;
+        this.articleId = article.articleId;
+        this.renderContent();        
+      })
   }
-  initContent() {
+  renderContent() {
+    this.dataStoreService.fetchContent(this.articleId).subscribe(
+      res => this.content = res.content
+    )    
+  }
 
-  }
 }

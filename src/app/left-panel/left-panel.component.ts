@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LeftPanelServiceService } from '../left-panel-service.service';
-import { Article } from '../article-type';
-import { Category } from '../category-type';
-import { Observable } from 'rxjs';
+import { Article, Category } from '../data-structures';
 
 @Component({
   selector: 'app-left-panel',
@@ -26,9 +24,5 @@ export class LeftPanelComponent implements OnInit {
     this.leftPanelService.getToc().subscribe(
       toc => this.toc = toc
       );
-  }
-
-  getContent(articleId: number): void{
-    window.alert(`Getting content of ${articleId}`);
   }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Category } from './category-type';
-import { Article } from './article-type';
+import { Article, Category } from './data-structures';
 import { Observable, of } from 'rxjs';
 import { DataStoreService } from './data-store.service';
 

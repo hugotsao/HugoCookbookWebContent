@@ -1,5 +1,5 @@
-<div *ngIf="this.title && this.content; else loadBlock">
-    <div class="title"><h2>{{ title | titlecase }}</h2></div>
+<div *ngIf="this.article && this.content; else loadBlock">
+    <div class="title"><h2>{{ this.article.title | titlecase }}</h2></div>
     <p class="content" [innerHTML]="content"></p>
     </div>
 <ng-template #loadBlock>
