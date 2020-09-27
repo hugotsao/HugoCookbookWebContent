@@ -1,5 +1,5 @@
 export interface Article {
-    id: number,
+    articleId: number,
     title: string,
     categoryId: number,
     tags: Array<string>,

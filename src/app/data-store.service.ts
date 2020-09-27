@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Category } from './category-type';
 import { Article } from './article-type';
 import { HttpClient } from '@angular/common/http'
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,11 +11,14 @@ export class DataStoreService {
   categories: Category[];
   articles: Article[];
   categorySubject: Subject<Category[]> = new Subject();
-  articleSubject: Subject<Article[]> = new Subject();
+  articleSubject: ReplaySubject<Article[]> = new ReplaySubject();
 
   constructor(
     private httpClient: HttpClient
-  ) { }
+  ) { 
+    this.fetchArticles();
+    this.fetchCategories();
+  }
 
   private fetchCategories() {
     if(!this.categories) {
@@ -38,21 +41,4 @@ export class DataStoreService {
       )
     }
   }
-
-  getCategories(): Observable<Category[]> {
-    if (!this.categories) {
-      this.fetchCategories();
-    }
-    this.categorySubject.next(this.categories);
-    return this.categorySubject;
-  }
-
-  getArticles(): Observable<Article[]> {
-    if (!this.articles) {
-      this.fetchArticles();
-    }
-    this.articleSubject.next(this.articles);
-    return this.articleSubject;
-  }
-  
 }

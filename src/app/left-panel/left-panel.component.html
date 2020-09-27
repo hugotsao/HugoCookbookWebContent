@@ -1,8 +1,10 @@
 <div *ngIf="this.toc && this.toc.size > 0; else loadBlock">
     <div *ngFor="let entry of this.toc | keyvalue">
         <span><h3>{{ entry.key }}</h3></span>
-        <div *ngFor="let title of entry.value">
-            {{ title.title }}
+        <div *ngFor="let article of entry.value">
+            <a [title]="article.title" [routerLink]="['/article', article.articleId]">
+                {{ article.title }}
+            </a>
         </div>
     </div>
 </div>

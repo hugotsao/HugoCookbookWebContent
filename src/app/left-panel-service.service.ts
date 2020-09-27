@@ -16,8 +16,8 @@ export class LeftPanelServiceService {
   ) {}
 
   getToc(): Observable<Map<string, Article[]>> {
-    this.dataStore.getCategories().subscribe(cats => {
-      this.dataStore.getArticles().subscribe(arts => {
+    this.dataStore.categorySubject.subscribe(cats => {
+      this.dataStore.articleSubject.subscribe(arts => {
         if(cats && arts) {
           this.transformToToc(cats, arts);
         }
