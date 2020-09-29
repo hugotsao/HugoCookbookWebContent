@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataStoreService } from './data-store.service';
 import { Subject, Observable } from 'rxjs';
-import { Article, Content } from './data-structures';
+import { Article } from './data-structures';
 
 
 @Injectable({
@@ -28,6 +28,4 @@ export class DisplayService {
     )
     return this.article;
   }
-
-
 }
