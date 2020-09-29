@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { LeftPanelComponent } from './left-panel/left-panel.component';
-import { DisplayPanelComponent } from './display-panel/display-panel.component';
-import { ArticleComponent } from './article/article.component';
+import { LeftPanelComponent } from './components/left-panel/left-panel.component';
+import { DisplayPanelComponent } from './components/display-panel/display-panel.component';
+import { ArticleComponent } from './components/article/article.component';
 
 @NgModule({
   declarations: [

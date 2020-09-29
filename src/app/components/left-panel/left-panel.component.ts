@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LeftPanelServiceService } from '../left-panel-service.service';
-import { Article, Category } from '../data-structures';
+import { LeftPanelServiceService } from '../../services/left-panel-service.service';
+import { Article, Category } from '../../services/data-structures';
 
 @Component({
   selector: 'app-left-panel',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as marked from "marked";
-import { DisplayService } from '../display.service';
-import { DataStoreService } from '../data-store.service';
+import { DisplayService } from '../../services/display.service';
+import { DataStoreService } from '../../services/data-store.service';
 import { ActivatedRoute } from '@angular/router';
-import { Article } from '../data-structures';
+import { Article } from '../../services/data-structures';
 import { Input } from '@angular/core';
 
 @Component({
