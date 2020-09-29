@@ -4,6 +4,7 @@ import { DisplayService } from '../display.service';
 import { DataStoreService } from '../data-store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../data-structures';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-display-panel',
@@ -14,10 +15,13 @@ export class DisplayPanelComponent implements OnInit {
   article: Article;
   content: string;
   articleId: number;
+  editorView: boolean;
+  
   constructor(
     private displayService: DisplayService,
     private dataStoreService: DataStoreService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    
   ) { }
 
   ngOnInit(): void {
@@ -26,8 +30,8 @@ export class DisplayPanelComponent implements OnInit {
   init() {
     this.route.paramMap.subscribe(paramMap => {
       this.articleId = +paramMap.get('articleId');
+      this.editorView = paramMap.has('edit');
       this.getArticle();
-      
     })
   }
   getArticle() {
@@ -40,7 +44,7 @@ export class DisplayPanelComponent implements OnInit {
   }
   renderContent() {
     this.dataStoreService.fetchContent(this.articleId).subscribe(
-      res => this.content = res.content
+      res => this.content = marked(res.content)
     )    
   }
 
