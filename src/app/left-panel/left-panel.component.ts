@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { LeftPanelServiceService } from '../left-panel-service.service';
 import { Article, Category } from '../data-structures';
 
@@ -11,7 +11,7 @@ export class LeftPanelComponent implements OnInit {
   toc: Map<string, Article[]>;
   titles: Article[];
   categories: Category[];
-  loading: boolean;
+  @Input() editorView: boolean;
   constructor(
     private leftPanelService: LeftPanelServiceService
   ) { }

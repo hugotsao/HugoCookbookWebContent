@@ -2,14 +2,3 @@
     overflow: hidden;
     width: 100%;
 }
-.left-panel {
-    border-right: solid;
-    width: 10%;
-    height: 98vh;
-    float: left;
-}
-.display-panel {
-    height: 100vh;
-    margin-left: 11%;
-    float: left;
-}

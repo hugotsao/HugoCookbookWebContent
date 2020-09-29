@@ -6,7 +6,6 @@
     <p class="content" [innerHTML]="content"></p>
 </ng-template>
 <ng-template #editPanel>
-    <div><input type="text" {[value]}="this.article.title"/></div>
     <div class="title"><h2>{{ this.article.title | titlecase }}</h2></div>
     <p class="content" [innerHTML]="content"></p>
 </ng-template>

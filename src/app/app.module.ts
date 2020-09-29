@@ -6,12 +6,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LeftPanelComponent } from './left-panel/left-panel.component';
 import { DisplayPanelComponent } from './display-panel/display-panel.component';
+import { ArticleComponent } from './article/article.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LeftPanelComponent,
-    DisplayPanelComponent
+    DisplayPanelComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserModule,
