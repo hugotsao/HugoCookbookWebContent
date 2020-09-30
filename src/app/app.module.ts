@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { LeftPanelComponent } from './components/left-panel/left-panel.component';
 import { DisplayPanelComponent } from './components/display-panel/display-panel.component';
 import { ArticleComponent } from './components/article/article.component';
+import { MarkdownPipe } from './markdown.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LeftPanelComponent,
     DisplayPanelComponent,
-    ArticleComponent
+    ArticleComponent,
+    MarkdownPipe
   ],
   imports: [
     BrowserModule,
