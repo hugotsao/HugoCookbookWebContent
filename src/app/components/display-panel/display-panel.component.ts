@@ -35,15 +35,13 @@ export class DisplayPanelComponent implements OnInit {
     })
   }
   
-
   getArticle() {
     this.displayService.getArticleFromId(this.articleId).subscribe(
       article => {
         this.article = article;        
         if (this.articleId === -1 && this.editorView) {
           this.article = {
-            ...this.article,
-            articleId: this.articleId + 1,
+            articleId: this.article.articleId + 1,
             title: '',
             categoryId: 1,
             tags: [],
