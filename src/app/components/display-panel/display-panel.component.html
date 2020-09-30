@@ -3,11 +3,11 @@
 </div>
 <ng-template #viewPanel>
     <div class="title"><h2>{{ this.article.title | titlecase }}</h2></div>
-    <p class="content" [innerHTML]="content"></p>
+    <p class="content" [innerHTML]="content | markdown"></p>
 </ng-template>
 <ng-template #editPanel>
-    <div class="title"><h2>{{ this.article.title | titlecase }}</h2></div>
-    <p class="content" [innerHTML]="content"></p>
+    <div class="title">title: <input type="text" [value]="this.article.title"/></div>
+    <p class="content" [innerHTML]="content | markdown"></p>
 </ng-template>
 <ng-template #loadBlock>
     <img src="assets/img/colorload.gif">

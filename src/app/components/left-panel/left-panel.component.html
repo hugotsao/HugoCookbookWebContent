@@ -11,6 +11,9 @@
             </a>
         </div>
     </div>
+    <a *ngIf="this.editorView" routerLink="/article/edit/-1">
+        New Blog
+    </a>
 </div>
 <ng-template #loadBlock>
     <img src="assets/img/colorload.gif">
