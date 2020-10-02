@@ -6,8 +6,11 @@
     <p class="content" [innerHTML]="content | markdown"></p>
 </ng-template>
 <ng-template #editPanel>
-    <div class="title">title: <input type="text" [value]="this.article.title"/></div>
-    <p class="content" [innerHTML]="content | markdown"></p>
+    <form>
+        <div class="title">title: <input type="text" name="title" [(ngModel)]="this.article.title"/></div>
+        <textarea class="draft" name="draft" [(ngModel)]="this.content"></textarea>
+        <div class="preview" [innerHTML]="content | markdown"></div>
+    </form>
 </ng-template>
 <ng-template #loadBlock>
     <img src="assets/img/colorload.gif">

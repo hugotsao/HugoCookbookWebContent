@@ -5,7 +5,7 @@
     float: left;
 }
 .display-panel {
-    height: 100vh;
-    margin-left: 11%;
+    height: 100vh;    
     float: left;
+    width: 80%;
 }

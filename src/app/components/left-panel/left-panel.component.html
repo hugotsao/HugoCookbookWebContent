@@ -1,4 +1,7 @@
 <div *ngIf="this.toc && this.toc.size > 0; else loadBlock">
+    <a *ngIf="this.editorView" routerLink="/article/edit/-1">
+        New Blog
+    </a>
     <div *ngFor="let entry of this.toc | keyvalue">
         <span><h3>{{ entry.key }}</h3></span>
         <div *ngFor="let article of entry.value">
@@ -11,9 +14,7 @@
             </a>
         </div>
     </div>
-    <a *ngIf="this.editorView" routerLink="/article/edit/-1">
-        New Blog
-    </a>
+
 </div>
 <ng-template #loadBlock>
     <img src="assets/img/colorload.gif">
