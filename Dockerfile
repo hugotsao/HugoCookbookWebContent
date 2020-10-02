@@ -1,7 +1,6 @@
 FROM node:12 as builder
 USER node
 ENV WORKSPACE=/home/node
-RUN mkdir -p $WORKSPACE
 WORKDIR $WORKSPACE
 COPY package*.json ./
 RUN npm install

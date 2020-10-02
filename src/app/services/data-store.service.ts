@@ -24,9 +24,9 @@ export class DataStoreService {
 
   private fetchCategories() {
     if(!this.categories) {
-      this.httpClient.get<any>(`${this.api}/categories`).subscribe(
+      this.httpClient.get<Category[]>(`${this.api}/categories`).subscribe(
         result => {
-          this.categories = result._embedded.categories;
+          this.categories = result;
           this.categorySubject.next(this.categories);
         }
       )
@@ -35,9 +35,9 @@ export class DataStoreService {
 
   private fetchArticles() {
     if (!this.articles) {
-      this.httpClient.get<any>(`${this.api}/articles`).subscribe(
+      this.httpClient.get<Article[]>(`${this.api}/articles`).subscribe(
         result => {
-          this.articles = result._embedded.articles.sort(this.sortArticle);
+          this.articles = result.sort(this.sortArticle);
           this.articleSubject.next(this.articles);
         }
       )
@@ -49,7 +49,7 @@ export class DataStoreService {
   }
 
   fetchContent(articleId: number): Observable<Content> {
-    return this.httpClient.get<Content>(`${this.api}/contents/search/findByArticleId?articleId=${articleId}`);
+    return this.httpClient.get<Content>(`${this.api}/content/${articleId}`);
   }
   
 }
