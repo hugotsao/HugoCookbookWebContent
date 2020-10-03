@@ -37,19 +37,18 @@ export class DataStoreService {
     if (!this.articles) {
       this.httpClient.get<Article[]>(`${this.api}/articles`).subscribe(
         result => {
-          this.articles = result.sort(this.sortArticle);
+          this.articles = result;
           this.articleSubject.next(this.articles);
         }
       )
     }
   }
-  
-  sortArticle(a: Article, b:Article) {
-    return b.articleId - a.articleId;
-  }
 
   fetchContent(articleId: number): Observable<Content> {
     return this.httpClient.get<Content>(`${this.api}/content/${articleId}`);
   }
-  
+
+  getNewArticleId(): Observable<number> {
+    return this.httpClient.get<number>(`${this.api}/articles/genNewArticleId`)
+  }
 }

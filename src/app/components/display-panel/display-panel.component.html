@@ -10,6 +10,7 @@
         <div class="title">title: <input type="text" name="title" [(ngModel)]="this.article.title"/></div>
         <textarea class="draft" name="draft" [(ngModel)]="this.content"></textarea>
         <div class="preview" [innerHTML]="content | markdown"></div>
+        <button type="submit" (click)="saveChange()">Save</button>
     </form>
 </ng-template>
 <ng-template #loadBlock>

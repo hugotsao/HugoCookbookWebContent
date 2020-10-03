@@ -29,9 +29,14 @@ export class DisplayPanelComponent implements OnInit {
   init() {
     this.route.paramMap.subscribe(paramMap => {
       this.articleId = +paramMap.get('articleId');
-      
-      this.getArticle();
-
+      if (this.articleId === -1 && this.editorView) {
+        this.dataStoreService.getNewArticleId().subscribe( res => {
+          this.articleId = res;
+          this.createNewDraft();
+        })
+      } else {
+        this.getArticle();
+      }
     })
   }
   
@@ -39,27 +44,31 @@ export class DisplayPanelComponent implements OnInit {
     this.displayService.getArticleFromId(this.articleId).subscribe(
       article => {
         this.article = article;        
-        if (this.articleId === -1 && this.editorView) {
-          this.article = {
-            articleId: this.article.articleId + 1,
-            title: '',
-            categoryId: 1,
-            tags: [],
-            ref: [],
-            DateCreation: new Date(),
-            DateLastModified: new Date()
-          };
-          this.content = '_new content here_';
-        } else {
         this.articleId = article.articleId;
         this.renderContent();
-        }
       })
   }
+
   renderContent() {
     this.dataStoreService.fetchContent(this.articleId).subscribe(
       res => this.content = res.content
-    )  
+    )
+  }
+  
+  createNewDraft() {
+    this.article = {
+      articleId: this.articleId,
+      title: '',
+      categoryId: 1,
+      tags: [],
+      ref: [],
+      DateCreation: new Date(),
+      DateLastModified: new Date()
+    };
+    this.content = '_new content here_';
+  }
+  saveChange() {
+    // Add category, Add article, Add content
   }
 
 }

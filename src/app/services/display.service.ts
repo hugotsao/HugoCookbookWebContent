@@ -9,7 +9,6 @@ import { Article } from './data-structures';
 })
 export class DisplayService {
   article: Subject<Article> = new Subject();
-  content: Subject<string> = new Subject();
   constructor(
     private dataService: DataStoreService
   ) { }
@@ -18,6 +17,7 @@ export class DisplayService {
     this.dataService.articleSubject.subscribe(
       articles => {
         if(articles) {
+  
           if(articleId === -1) {
             this.article.next(articles[0]);
           } else {
