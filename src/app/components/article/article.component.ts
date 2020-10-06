@@ -10,8 +10,7 @@ export class ArticleComponent implements OnInit {
   editorView: boolean;
   constructor(private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit(): void {    
-    this.editorView = this.activatedRoute.snapshot.paramMap.has('edit');
+  ngOnInit(): void {
     this.activatedRoute.url.subscribe(url => {
       this.editorView = url.toString().indexOf('edit') > 0;      
     });

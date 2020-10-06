@@ -2,19 +2,21 @@
     text-align: center;
     margin-bottom: 5vh;
 }
-.content {
-   margin-left: 0px;
+.meta-data {
+    text-align: center;
+    margin-bottom: 5vh;
 }
-
-.draft {
+.content {
+    margin-left: 0px;
+}
+.content {
     width: 40%;
     height: 90vh;
     margin-left: 5vw;
-    border-style: dotted;
     float: left;
 }
 .preview {
-    width: 40%;
+    width: 45%;
     margin-left : 5vw;
     padding-left: 1vw;
     height: 90vh;

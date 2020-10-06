@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DisplayService } from '../../services/display.service';
 import { DataStoreService } from '../../services/data-store.service';
 import { ActivatedRoute } from '@angular/router';
-import { Article } from '../../services/data-structures';
+import { Article, Category } from '../../services/data-structures';
 import { Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-display-panel',
@@ -14,6 +15,9 @@ export class DisplayPanelComponent implements OnInit {
   article: Article;
   content: string;
   articleId: number;
+  categories: Category[];
+  category: Category;
+  newContentForm: FormControl;
   @Input() editorView: boolean;
   
   constructor(
@@ -24,16 +28,16 @@ export class DisplayPanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.init();    
+    this.init();
   }
   init() {
     this.route.paramMap.subscribe(paramMap => {
       this.articleId = +paramMap.get('articleId');
       if (this.articleId === -1 && this.editorView) {
         this.dataStoreService.getNewArticleId().subscribe( res => {
-          this.articleId = res;
-          this.createNewDraft();
-        })
+          this.articleId = res;  
+        });
+        this.newContentForm = new FormControl();
       } else {
         this.getArticle();
       }
@@ -55,20 +59,20 @@ export class DisplayPanelComponent implements OnInit {
     )
   }
   
-  createNewDraft() {
-    this.article = {
-      articleId: this.articleId,
-      title: '',
-      categoryId: 1,
-      tags: [],
-      ref: [],
-      DateCreation: new Date(),
-      DateLastModified: new Date()
-    };
-    this.content = '_new content here_';
+  setNewContent() {
+    this.newContentForm.setValue(
+       {
+          article: {
+            articleId: this.articleId,
+            title: '',
+            categoryId: 1,
+            tags: [],
+            ref: [],
+            DateCreation: new Date(),
+            DateLastModified: new Date()
+          },
+          content: this.content
+        }
+    )
   }
-  saveChange() {
-    // Add category, Add article, Add content
-  }
-
 }

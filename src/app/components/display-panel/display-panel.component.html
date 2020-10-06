@@ -1,18 +1,19 @@
 <div *ngIf="this.article && this.content else loadBlock">
     <div *ngIf="!this.editorView then viewPanel else editPanel" ></div>
 </div>
+
+
 <ng-template #viewPanel>
     <div class="title"><h2>{{ this.article.title | titlecase }}</h2></div>
     <p class="content" [innerHTML]="content | markdown"></p>
 </ng-template>
+
+
 <ng-template #editPanel>
-    <form>
-        <div class="title">title: <input type="text" name="title" [(ngModel)]="this.article.title"/></div>
-        <textarea class="draft" name="draft" [(ngModel)]="this.content"></textarea>
-        <div class="preview" [innerHTML]="content | markdown"></div>
-        <button type="submit" (click)="saveChange()">Save</button>
-    </form>
+    <app-edit-form [content]="this.content"></app-edit-form>
 </ng-template>
+
+
 <ng-template #loadBlock>
     <img src="assets/img/colorload.gif">
 </ng-template>
