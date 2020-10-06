@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Article, Category } from './data-structures';
-import { Observable, of } from 'rxjs';
+import { Observable, merge,zip } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DataStoreService } from './data-store.service';
 
 
@@ -15,20 +16,13 @@ export class LeftPanelServiceService {
   ) {}
 
   getTableOfContent(): Observable<Map<string, Article[]>> {
-    return new Observable((observer) => {
-      if (this.tableOfContent.size === 0) {
-        this.dataStore.fetchCategories().subscribe(categories => {
-          this.dataStore.fetchArticles().subscribe(articles => {
-            if (categories && articles) {
-              this.tableOfContent = this.transformToToc(categories, articles);
-              observer.next(this.tableOfContent);
-            }
-          })
-        })
-      } else {
-        observer.next(this.tableOfContent);
-      }    
-    })
+    const merged = merge<Category[], Article[]>(this.dataStore.fetchCategories(), this.dataStore.fetchArticles)
+    return zip(this.dataStore.fetchCategories(), this.dataStore.fetchArticles())
+    .pipe(
+      map(([categories, articles])=> {
+        return this.transformToToc(categories, articles)
+      })
+    )
   }
 
   private transformToToc(cats: Category[], arts: Article[]):  Map<string, Article[]> {
