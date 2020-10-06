@@ -35,7 +35,7 @@ export class EditFormComponent implements OnInit {
     this.editForm.patchValue({
       content: this.content
     });
-    this.categories = this.dataStoreService.categorySubject;
+    this.categories = this.dataStoreService.fetchCategories();
   }
 
   saveChange() {

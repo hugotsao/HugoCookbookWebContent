@@ -14,7 +14,7 @@ export class DisplayService {
   ) { }
   
   getArticleFromId(articleId: number): Observable<Article> {
-    this.dataService.articleSubject.subscribe(
+    this.dataService.fetchArticles().subscribe(
       articles => {
         if(articles) {
   

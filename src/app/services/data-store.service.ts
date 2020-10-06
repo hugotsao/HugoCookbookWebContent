@@ -10,38 +10,39 @@ export class DataStoreService {
   api = "http://localhost:8080";
   categories: Category[];
   articles: Article[];
-  categorySubject: Subject<Category[]> = new Subject();
-  articleSubject: ReplaySubject<Article[]> = new ReplaySubject();
   contentSubject: Subject<Content> = new Subject();
 
   constructor(
     private httpClient: HttpClient
-  ) { 
-    this.fetchArticles();
-    this.fetchCategories();
-    
+  ) {
   }
 
-  private fetchCategories() {
-    if(!this.categories) {
-      this.httpClient.get<Category[]>(`${this.api}/categories`).subscribe(
-        result => {
+  fetchCategories(): Observable<Category[]> {
+    return new Observable((observer) => {
+      if(!this.categories) {
+        this.httpClient.get<Category[]>(`${this.api}/categories`).subscribe(result => {
           this.categories = result;
-          this.categorySubject.next(this.categories);
-        }
-      )
-    }
+          observer.next(result);
+        })
+      } else {
+        observer.next(this.categories);
+      }
+    })
   }
 
-  private fetchArticles() {
-    if (!this.articles) {
-      this.httpClient.get<Article[]>(`${this.api}/articles`).subscribe(
-        result => {
-          this.articles = result;
-          this.articleSubject.next(this.articles);
-        }
-      )
-    }
+  fetchArticles(): Observable<Article[]> {
+    return new Observable((observer) => {
+      if (!this.articles) {
+        this.httpClient.get<Article[]>(`${this.api}/articles`).subscribe(
+          result => {
+            this.articles = result
+            observer.next(result);
+          });
+      } else {
+        observer.next(this.articles);
+      }
+
+    })
   }
 
   fetchContent(articleId: number): Observable<Content> {

@@ -14,28 +14,36 @@ export class LeftPanelServiceService {
     private dataStore: DataStoreService
   ) {}
 
-  getToc(): Observable<Map<string, Article[]>> {
-    this.dataStore.categorySubject.subscribe(cats => {
-      this.dataStore.articleSubject.subscribe(arts => {
-        if(cats && arts) {
-          this.transformToToc(cats, arts);
-        }
-      })
+  getTableOfContent(): Observable<Map<string, Article[]>> {
+    return new Observable((observer) => {
+      if (this.tableOfContent.size === 0) {
+        this.dataStore.fetchCategories().subscribe(categories => {
+          this.dataStore.fetchArticles().subscribe(articles => {
+            if (categories && articles) {
+              this.tableOfContent = this.transformToToc(categories, articles);
+              observer.next(this.tableOfContent);
+            }
+          })
+        })
+      } else {
+        observer.next(this.tableOfContent);
+      }    
     })
-    return of(this.tableOfContent);
   }
 
-  private transformToToc(cats: Category[], arts: Article[]){
+  private transformToToc(cats: Category[], arts: Article[]):  Map<string, Article[]> {
+    const map: Map<string, Article[]> = new Map();
     for (let cat of cats) {
-      for (let art of arts) {
+      for (let art of arts) {        
         const catName = art.categoryId === cat.categoryId ? cat.name : undefined;
         if(catName) {
-          if(!this.tableOfContent.has(catName)){
-            this.tableOfContent.set(catName, []);
+          if(!map.has(catName)){
+            map.set(catName, []);
           }
-          this.tableOfContent.get(catName).push(art);
+          map.get(catName).push(art);
         }
       }
     }
+    return map;
   }
 }

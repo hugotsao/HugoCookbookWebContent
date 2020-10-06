@@ -21,7 +21,7 @@ export class LeftPanelComponent implements OnInit {
   }
 
   getToc() {
-    this.leftPanelService.getToc().subscribe(
+    this.leftPanelService.getTableOfContent().subscribe(
       toc => this.toc = toc
       );
   }
