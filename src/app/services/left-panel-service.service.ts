@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Article, Category } from './data-structures';
-import { Observable, merge,zip } from 'rxjs';
+import { Observable, merge,zip, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataStoreService } from './data-store.service';
 
@@ -16,28 +16,29 @@ export class LeftPanelServiceService {
   ) {}
 
   getTableOfContent(): Observable<Map<string, Article[]>> {
-    const merged = merge<Category[], Article[]>(this.dataStore.fetchCategories(), this.dataStore.fetchArticles)
-    return zip(this.dataStore.fetchCategories(), this.dataStore.fetchArticles())
-    .pipe(
-      map(([categories, articles])=> {
-        return this.transformToToc(categories, articles)
-      })
-    )
+    if (this.tableOfContent.size == 0) {
+      return zip(this.dataStore.fetchCategories(), this.dataStore.fetchArticles())
+      .pipe(
+        map(([categories, articles])=> {
+          this.transformToToc(categories, articles);
+          return this.tableOfContent;
+        })
+      )
+    }
+    return of(this.tableOfContent);
   }
 
-  private transformToToc(cats: Category[], arts: Article[]):  Map<string, Article[]> {
-    const map: Map<string, Article[]> = new Map();
+  private transformToToc(cats: Category[], arts: Article[]){
     for (let cat of cats) {
       for (let art of arts) {        
         const catName = art.categoryId === cat.categoryId ? cat.name : undefined;
         if(catName) {
-          if(!map.has(catName)){
-            map.set(catName, []);
+          if(!this.tableOfContent.has(catName)){
+            this.tableOfContent.set(catName, []);
           }
-          map.get(catName).push(art);
+          this.tableOfContent.get(catName).push(art);
         }
       }
     }
-    return map;
   }
 }
