@@ -5,12 +5,12 @@
 
 <ng-template #viewPanel>
     <div class="title"><h2>{{ this.article.title | titlecase }}</h2></div>
-    <p class="content" [innerHTML]="content | markdown"></p>
+    <p class="content" [innerHTML]="content.content | markdown"></p>
 </ng-template>
 
 
 <ng-template #editPanel>
-    <app-edit-form [content]="this.content"></app-edit-form>
+    <app-edit-form [form]="this.editForm"></app-edit-form>
 </ng-template>
 
 

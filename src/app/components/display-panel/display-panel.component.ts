@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { DisplayService } from '../../services/display.service';
 import { DataStoreService } from '../../services/data-store.service';
 import { ActivatedRoute } from '@angular/router';
-import { Article, Category } from '../../services/data-structures';
+import { Article, Category, Content } from '../../services/data-structures';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { map } from 'rxjs/operators';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-display-panel',
@@ -13,18 +14,14 @@ import { FormControl } from '@angular/forms';
 })
 export class DisplayPanelComponent implements OnInit {
   article: Article;
-  content: string;
-  articleId: number;
-  categories: Category[];
-  category: Category;
-  newContentForm: FormControl;
+  content: Content;
   @Input() editorView: boolean;
+  editForm: FormGroup;
   
   constructor(
-    private displayService: DisplayService,
     private dataStoreService: DataStoreService,
     private route: ActivatedRoute,
-    
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -32,47 +29,23 @@ export class DisplayPanelComponent implements OnInit {
   }
   init() {
     this.route.paramMap.subscribe(paramMap => {
-      this.articleId = +paramMap.get('articleId');
-      if (this.articleId === -1 && this.editorView) {
-        this.dataStoreService.getNewArticleId().subscribe( res => {
-          this.articleId = res;  
-        });
-        this.newContentForm = new FormControl();
-      } else {
-        this.getArticle();
-      }
-    })
-  }
-  
-  getArticle() {
-    this.displayService.getArticleFromId(this.articleId).subscribe(
-      article => {
-        this.article = article;        
-        this.articleId = article.articleId;
-        this.renderContent();
-      })
-  }
-
-  renderContent() {
-    this.dataStoreService.fetchContent(this.articleId).subscribe(
-      res => this.content = res.content
-    )
-  }
-  
-  setNewContent() {
-    this.newContentForm.setValue(
-       {
-          article: {
-            articleId: this.articleId,
-            title: '',
-            categoryId: 1,
-            tags: [],
-            ref: [],
-            DateCreation: new Date(),
-            DateLastModified: new Date()
-          },
-          content: this.content
+      const articleId = +paramMap.get('articleId');
+      zip(this.dataStoreService.getArticleFromId(articleId), this.dataStoreService.fetchContent(articleId))
+      .pipe(map(([article, content]) => {
+        return { article: article, content: content }
+      }))
+     .subscribe(
+        obj => {
+          this.article = obj.article;
+          this.content = obj.content;
+          this.editForm = this.formBuilder.group({
+            article: this.formBuilder.group({
+              ...this.article
+            }),
+            content: this.content.content
+          })
         }
-    )
+      )
+    })
   }
 }

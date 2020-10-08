@@ -1,18 +1,16 @@
-<form [formGroup]="editForm">
+<form [formGroup]="form">
     <div formGroupName="article">
-    <div class="title">title: <input type="text" formControlName="title"/>
-    </div>
-    <div class="meta-data">
+    <div class="article">title: <input type="text" formControlName="title"/><br>
         <label>Category</label> 
-        <select name="category" formControlName="category" (change)="changingCategory()">
+        <select name="category" formControlName="categoryId" (change)="changingCategory()">
             <option selected value=""> -- select a category -- </option>
-            <option *ngFor="let cat of this.categories | async" [value]="cat.categoryId">
-                {{ cat.categoryId }}. {{cat.name}}
+            <option *ngFor="let cat of this.categories$ | async" [value]="cat.categoryId">
+                {{ cat.categoryId }}. {{ cat.name }}
             </option>
         </select>
     </div>
     </div>
     <textarea class="content" formControlName="content"></textarea>
-    <div class="preview" formControlName="content" innerHTML="content | markdown"></div>
+    <div class="preview" [innerHTML]="form.get('content').value | markdown"></div>
     <button type="submit" (click)="saveChange()">Save</button>
 </form>

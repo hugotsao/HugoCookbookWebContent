@@ -45,11 +45,35 @@ export class DataStoreService {
     })
   }
 
-  fetchContent(articleId: number): Observable<Content> {
-    return this.httpClient.get<Content>(`${this.api}/content/${articleId}`);
+  getNewArticleId(): Observable<number> {
+    return this.httpClient.get<number>(`${this.api}/articles/genNewArticleId`);
   }
 
-  getNewArticleId(): Observable<number> {
-    return this.httpClient.get<number>(`${this.api}/articles/genNewArticleId`)
+  fetchContent(articleId: number): Observable<Content> {
+    return new Observable((observer) => {
+      if (articleId === -1) {
+        this.getNewArticleId().subscribe(newId => {
+          observer.next({articleId: newId} as Content)
+        })
+      } else {
+        this.httpClient.get<Content>(`${this.api}/content/${articleId}`).subscribe(content => observer.next(content))
+      }
+    })
+  }
+
+  getArticleFromId(articleId: number): Observable<Article> {
+    return new Observable((observer) => {
+      if (articleId === -1) {
+        this.getNewArticleId().subscribe(newId => {
+          observer.next({
+            articleId: newId
+          } as Article)
+        })
+      } else {
+        this.fetchArticles().subscribe(
+          articles => observer.next(articles.filter(article => article.articleId === articleId)[0])
+        )
+      }
+    })
   }
 }
