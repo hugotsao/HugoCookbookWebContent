@@ -1,7 +1,6 @@
 [
 {
-    "articleId": 1,
-    "categoryId": 1,
+    "categoryId": "",
     "title": "LC001",
     "tags": ["Array"],
     "references": ["LC002"],
@@ -9,12 +8,11 @@
     "modifiedDate": "2020-09-29"
 },
 {
-    "articleId": 2,
-    "categoryId": 1,
+    "categoryId": "",
     "title": "LC002",
     "tags": ["Array"],
     "references": ["LC001"],
-    "publishDate":"2020-09-20",
+    "publishDate":"2020-09-25",
     "modifiedDate": "2020-09-29"
 }
 ]

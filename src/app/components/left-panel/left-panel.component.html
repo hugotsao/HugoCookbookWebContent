@@ -1,8 +1,8 @@
-<div *ngIf="this.toc && this.toc.size > 0; else loadBlock">
+<div *ngIf="this.tableOfContent && this.tableOfContent.size > 0; else loadBlock">
     <a *ngIf="this.editorView" routerLink="/article/edit/-1">
         New Blog
     </a>
-    <div *ngFor="let entry of this.toc | keyvalue">
+    <div *ngFor="let entry of this.tableOfContent | keyvalue">
         <span><h3>{{ entry.key }}</h3></span>
         <div *ngFor="let article of entry.value">
             

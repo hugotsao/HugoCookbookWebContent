@@ -1,17 +1,17 @@
 export interface Article {
-    articleId: number,
+    articleId: string,
     title: string,
-    categoryId: number,
+    categoryId: string,
     tags: Array<string>,
     ref: Array<string>,
     DateCreation: Date,
     DateLastModified: Date
 }
 export interface Category {
-    categoryId: number,
-    name: string
+    categoryId: string,
+    categoryName: string
 }
 export interface Content {
-    articleId: number,
+    articleId: string,
     content: string
 }

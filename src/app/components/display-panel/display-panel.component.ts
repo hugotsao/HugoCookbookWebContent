@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DataStoreService } from '../../services/data-store.service';
+import { DataStoreService } from '../../data-store.service';
 import { ActivatedRoute } from '@angular/router';
-import { Article, Category, Content } from '../../services/data-structures';
+import { Article, Category, Content } from '../../data-structures';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Input } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -29,7 +29,7 @@ export class DisplayPanelComponent implements OnInit {
   }
   init() {
     this.route.paramMap.subscribe(paramMap => {
-      const articleId = +paramMap.get('articleId');
+      const articleId = paramMap.get('articleId');
       zip(this.dataStoreService.getArticleFromId(articleId), this.dataStoreService.fetchContent(articleId))
       .pipe(map(([article, content]) => {
         return { article: article, content: content }

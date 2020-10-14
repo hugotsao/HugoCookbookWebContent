@@ -5,7 +5,7 @@
         <select name="category" formControlName="categoryId" (change)="changingCategory()">
             <option selected value=""> -- select a category -- </option>
             <option *ngFor="let cat of this.categories$ | async" [value]="cat.categoryId">
-                {{ cat.categoryId }}. {{ cat.name }}
+                {{ cat.categoryId }}. {{ cat.categoryName }}
             </option>
         </select>
     </div>

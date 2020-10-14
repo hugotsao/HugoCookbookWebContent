@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DataStoreService } from '../../services/data-store.service';
-import { Category } from 'src/app/services/data-structures';
+import { DataStoreService } from '../../data-store.service';
+import { Category } from 'src/app/data-structures';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -1,14 +1,14 @@
 [
 {
 	"categoryId": "1",
-	"name":"LeetCode"
+	"categoryName":"LeetCode"
 },
 {
 	"categoryId": "2",
-	"name":"Recipe"
+	"categoryName":"Recipe"
 },
  {
-	 "categoryId": "3",
-	"name":"Comparison"
+	"categoryId": "3",
+	"categoryName":"Comparison"
  }
 ]

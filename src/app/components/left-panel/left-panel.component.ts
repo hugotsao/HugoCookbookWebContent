@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LeftPanelServiceService } from '../../services/left-panel-service.service';
-import { Article, Category } from '../../services/data-structures';
+import { DataStoreService } from '../../data-store.service';
+import { Article, Category } from '../../data-structures';
+import { Observable, zip, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-left-panel',
@@ -8,12 +10,10 @@ import { Article, Category } from '../../services/data-structures';
   styleUrls: ['./left-panel.component.css']
 })
 export class LeftPanelComponent implements OnInit {
-  toc: Map<string, Article[]>;
-  titles: Article[];
-  categories: Category[];
+  tableOfContent: Map<string, Article[]> = new Map();
   @Input() editorView: boolean;
   constructor(
-    private leftPanelService: LeftPanelServiceService
+    private dataStoreService: DataStoreService
   ) { }
 
   ngOnInit(): void {
@@ -21,8 +21,35 @@ export class LeftPanelComponent implements OnInit {
   }
 
   getToc() {
-    this.leftPanelService.getTableOfContent().subscribe(
-      toc => this.toc = toc
+    this.getTableOfContent().subscribe(
+      toc => this.tableOfContent = toc
       );
+  }
+
+  getTableOfContent(): Observable<Map<string, Article[]>> {
+    if (this.tableOfContent.size === 0) {
+      return zip(this.dataStoreService.fetchCategories(), this.dataStoreService.fetchArticles())
+      .pipe(
+        map(([categories, articles])=> {
+          this.transformToToc(categories, articles);
+          return this.tableOfContent;
+        })
+      )
+    }
+    return of(this.tableOfContent);
+  }
+
+  private transformToToc(cats: Category[], arts: Article[]){
+    for (let cat of cats) {
+      for (let art of arts) {        
+        const catName = art.categoryId === cat.categoryId ? cat.categoryName : undefined;
+        if(catName) {
+          if(!this.tableOfContent.has(catName)){
+            this.tableOfContent.set(catName, []);
+          }
+          this.tableOfContent.get(catName).push(art);
+        }
+      }
+    }
   }
 }
