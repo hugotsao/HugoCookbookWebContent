@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataStoreService } from '../../data-store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article, Category, Content } from '../../data-structures';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { Input } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { zip } from 'rxjs';
@@ -40,12 +40,20 @@ export class DisplayPanelComponent implements OnInit {
           this.content = obj.content;
           this.editForm = this.formBuilder.group({
             article: this.formBuilder.group({
-              ...this.article
+              ...this.article,
+              tags: this.formBuilder.array(this.article.tags ? [this.article.tags] : []),
+              references: this.formBuilder.array(this.article.references ? [this.article.references]: [])
             }),
             content: this.content.content
           })
         }
       )
     })
+  }
+  get tags() {
+    return this.editForm.get('tags') as FormArray
+  }
+  get ref() {
+    return this.editForm.get('ref') as FormArray
   }
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { DataStoreService } from '../../data-store.service';
-import { Category } from 'src/app/data-structures';
+import { Category, Article, Content } from 'src/app/data-structures';
 import { Observable } from 'rxjs';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-edit-form',
@@ -21,11 +22,7 @@ export class EditFormComponent implements OnInit {
   }
 
   saveChange() {
-    // Add category, Add article, Add content
-    //this.setNewContent();
-  }
-  changingCategory() {
-    console.log(`this category is ${this.form.get('article').get('categoryId')}`);
+    this.dataStoreService.createOrUpdateContent(this.form.getRawValue());
   }
 
 }

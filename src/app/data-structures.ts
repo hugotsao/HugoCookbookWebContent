@@ -2,10 +2,10 @@ export interface Article {
     articleId: string,
     title: string,
     categoryId: string,
-    tags: Array<string>,
-    ref: Array<string>,
-    DateCreation: Date,
-    DateLastModified: Date
+    tags: string[],
+    references: string[],
+    publishDate: Date,
+    modifiedDate: Date
 }
 export interface Category {
     categoryId: string,

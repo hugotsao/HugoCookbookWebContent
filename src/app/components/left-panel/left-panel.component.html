@@ -1,5 +1,5 @@
 <div *ngIf="this.tableOfContent && this.tableOfContent.size > 0; else loadBlock">
-    <a *ngIf="this.editorView" routerLink="/article/edit/-1">
+    <a *ngIf="this.editorView" routerLink="/article/edit/new">
         New Blog
     </a>
     <div *ngFor="let entry of this.tableOfContent | keyvalue">

@@ -2,10 +2,10 @@
     <div formGroupName="article">
     <div class="article">title: <input type="text" formControlName="title"/><br>
         <label>Category</label> 
-        <select name="category" formControlName="categoryId" (change)="changingCategory()">
+        <select name="category" formControlName="categoryId">
             <option selected value=""> -- select a category -- </option>
             <option *ngFor="let cat of this.categories$ | async" [value]="cat.categoryId">
-                {{ cat.categoryId }}. {{ cat.categoryName }}
+                {{ cat.categoryName }}
             </option>
         </select>
     </div>
