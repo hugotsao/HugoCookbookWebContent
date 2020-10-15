@@ -10,7 +10,12 @@
         </select>
     </div>
     </div>
-    <textarea class="content" formControlName="content"></textarea>
-    <div class="preview" [innerHTML]="form.get('content').value | markdown"></div>
-    <button type="submit" (click)="saveChange()">Save</button>
+    <div formGroupName="content">
+        <textarea class="content" formControlName="content"></textarea>
+        <div class="preview" [innerHTML]="form.get('content').get('content').value | markdown ">
+        </div>
+    </div>
+    
+    <button type="submit" style="margin-left: 5vw;" (click)="saveChange()">Save</button>
+    
 </form>

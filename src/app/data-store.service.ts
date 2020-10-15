@@ -80,23 +80,23 @@ export class DataStoreService {
         ...article,
         modifiedDate: today
       }
-      const articlepayload = JSON.stringify(article);
-      const contentpayload = JSON.stringify(content);
-      this.httpClient.put<Article>(`${this.api}/article`, articlepayload, this.httpOptions).subscribe(article => this.articles.push(article));
-      this.httpClient.put<Content>(`${this.api}/content`, contentpayload, this.httpOptions).subscribe();
+      this.httpClient.put<Article>(`${this.api}/article`, article, this.httpOptions).subscribe(article => this.articles.push(article));
+      this.httpClient.put<Content>(`${this.api}/content`, content, this.httpOptions).subscribe();
     } else {
       article = {
         ...article,
         publishDate: today,
         modifiedDate: today
       }
-      const content = {
-        content: contentString
-      }
-      const articlepayload = JSON.stringify(article);
-      const contentpayload = JSON.stringify(content);
-      this.httpClient.post<Article>(`${this.api}/article`, articlepayload, this.httpOptions).subscribe(article => this.articles.push(article));
-      this.httpClient.post<Content>(`${this.api}/content`, contentpayload, this.httpOptions).subscribe();
+      this.httpClient.post<Article>(`${this.api}/article`, article, this.httpOptions).subscribe(article => {
+        this.articles.push(article);
+        const content: Content = {
+          articleId: article.articleId,
+          content: contentString
+        }
+        this.httpClient.post<Content>(`${this.api}/content`, content, this.httpOptions).subscribe();
+      });
+      
     }
     
  }

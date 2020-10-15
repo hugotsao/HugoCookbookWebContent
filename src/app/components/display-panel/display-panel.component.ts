@@ -44,7 +44,9 @@ export class DisplayPanelComponent implements OnInit {
               tags: this.formBuilder.array(this.article.tags ? [this.article.tags] : []),
               references: this.formBuilder.array(this.article.references ? [this.article.references]: [])
             }),
-            content: this.content.content
+            content: this.formBuilder.group({
+              ...this.content
+            })
           })
         }
       )
