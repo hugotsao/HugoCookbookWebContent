@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DataStoreService } from '../../data-store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article, Category, Content } from '../../data-structures';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, ValidatorFn, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { Input } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { zip } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 
 @Component({
   selector: 'app-display-panel',
@@ -43,7 +43,7 @@ export class DisplayPanelComponent implements OnInit {
               ...this.article,
               tags: this.formBuilder.array(this.article.tags ? [this.article.tags] : []),
               references: this.formBuilder.array(this.article.references ? [this.article.references]: [])
-            }),
+            }, {asyncValidators: this.articleValidator(articleId)}),
             content: this.formBuilder.group({
               ...this.content
             })
@@ -52,10 +52,22 @@ export class DisplayPanelComponent implements OnInit {
       )
     })
   }
+
+  articleValidator(articleId: string): AsyncValidatorFn {
+    return ((articleFormGroup: FormGroup): Observable<ValidationErrors | any>=> {
+      const title = articleFormGroup.get('title').value;
+      return this.dataStoreService.fetchArticles().pipe(map(articles => {        
+        if(articles.find(article => title === article.title) && 'new' === articleId) {
+          return {titleAlreadyExisted: true};
+        }
+      }))
+    })
+  }
+
   get tags() {
     return this.editForm.get('tags') as FormArray
   }
-  get ref() {
-    return this.editForm.get('ref') as FormArray
+  get references() {
+    return this.editForm.get('references') as FormArray
   }
 }

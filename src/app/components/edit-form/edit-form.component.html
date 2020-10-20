@@ -1,6 +1,7 @@
 <form [formGroup]="form">
     <div formGroupName="article">
     <div class="article">title: <input type="text" formControlName="title"/><br>
+        <div *ngIf="form.get('article').errors?.titleAlreadyExisted">Title already Exists</div>
         <label>Category</label> 
         <select name="category" formControlName="categoryId">
             <option selected value=""> -- select a category -- </option>
@@ -16,6 +17,6 @@
         </div>
     </div>
     
-    <button type="submit" style="margin-left: 5vw;" (click)="saveChange()">Save</button>
+    <button type="submit" style="margin-left: 5vw;" [disabled]="!form.valid" (click)="saveChange()">Save</button>
     
 </form>
