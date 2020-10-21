@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DataStoreService } from '../../data-store.service';
 import { Article, Category } from '../../data-structures';
-import { Observable, zip, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -28,7 +28,7 @@ export class LeftPanelComponent implements OnInit {
 
   getTableOfContent(): Observable<Map<string, Article[]>> {
     if (this.tableOfContent.size === 0) {
-      return zip(this.dataStoreService.fetchCategories(), this.dataStoreService.fetchArticles())
+      return forkJoin(this.dataStoreService.fetchCategories(), this.dataStoreService.fetchArticles())
       .pipe(
         map(([categories, articles])=> {
           this.transformToToc(categories, articles);

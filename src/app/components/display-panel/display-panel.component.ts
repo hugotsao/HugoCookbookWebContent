@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DataStoreService } from '../../data-store.service';
 import { ActivatedRoute } from '@angular/router';
-import { Article, Category, Content } from '../../data-structures';
-import { FormGroup, FormBuilder, FormArray, ValidatorFn, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { Article, Content } from '../../data-structures';
+import { FormGroup, FormBuilder, FormArray, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { Input } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Observable, zip } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-display-panel',
@@ -30,14 +30,11 @@ export class DisplayPanelComponent implements OnInit {
   init() {
     this.route.paramMap.subscribe(paramMap => {
       const articleId = paramMap.get('articleId');
-      zip(this.dataStoreService.getArticleFromId(articleId), this.dataStoreService.fetchContent(articleId))
-      .pipe(map(([article, content]) => {
-        return { article: article, content: content }
-      }))
+      forkJoin(this.dataStoreService.getArticleFromId(articleId), this.dataStoreService.fetchContent(articleId))
      .subscribe(
-        obj => {
-          this.article = obj.article;
-          this.content = obj.content;
+      ([article, content]) => {
+          this.article = article;
+          this.content = content;
           this.editForm = this.formBuilder.group({
             article: this.formBuilder.group({
               ...this.article,
