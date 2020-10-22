@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { DataStoreService } from '../../data-store.service';
 import { Category, Article, Content } from 'src/app/data-structures';
 import { Observable } from 'rxjs';
-import { ThrowStmt } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-edit-form',

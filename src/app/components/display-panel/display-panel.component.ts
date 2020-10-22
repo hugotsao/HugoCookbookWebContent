@@ -30,7 +30,7 @@ export class DisplayPanelComponent implements OnInit {
   init() {
     this.route.paramMap.subscribe(paramMap => {
       const articleId = paramMap.get('articleId');
-      forkJoin(this.dataStoreService.getArticleFromId(articleId), this.dataStoreService.fetchContent(articleId))
+      this.dataStoreService.getDisplayContent(articleId)
      .subscribe(
       ([article, content]) => {
           this.article = article;

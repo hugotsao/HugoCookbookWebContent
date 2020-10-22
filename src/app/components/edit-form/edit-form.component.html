@@ -3,7 +3,7 @@
     <div class="article">title: <input type="text" formControlName="title"/><br>
         <div *ngIf="form.get('article').errors?.titleAlreadyExisted">Title already Exists</div>
         <label>Category</label> 
-        <select name="category" formControlName="categoryId">
+        <select name="category" formControlName="categoryId" required>
             <option selected value=""> -- select a category -- </option>
             <option *ngFor="let cat of this.categories$ | async" [value]="cat.categoryId">
                 {{ cat.categoryName }}
