@@ -11,7 +11,7 @@ import { shareReplay } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DataStoreService {
-  api = "http://localhost:8080";
+  api = "http://localhost:8080/api";
 
   contentSubject: Subject<Content> = new Subject();
   httpOptions = {
@@ -26,11 +26,11 @@ export class DataStoreService {
   }
 
   fetchCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(`${this.api}/categories`);
+    return this.httpClient.get<Category[]>(`${this.api}/categories/get`);
   }
 
   fetchArticles(): Observable<Article[]> {
-    return this.httpClient.get<Article[]>(`${this.api}/articles`).pipe(
+    return this.httpClient.get<Article[]>(`${this.api}/articles/get`).pipe(
       shareReplay(1)
     );
   }
@@ -40,7 +40,7 @@ export class DataStoreService {
       return of({content: ''} as Content);
     }
     return this.getArticleFromId(id).pipe(
-      switchMap(article => this.httpClient.get<Content>(`${this.api}/content/${article.articleId}`))
+      switchMap(article => this.httpClient.get<Content>(`${this.api}/content/${article.articleId}/get`))
     )
   }
 
@@ -57,20 +57,20 @@ export class DataStoreService {
         ...article,
         modifiedDate: today
       }
-      this.httpClient.put<Article>(`${this.api}/article`, article, this.httpOptions).subscribe();
-      this.httpClient.put<Content>(`${this.api}/content`, content, this.httpOptions).subscribe();
+      this.httpClient.put<Article>(`${this.api}/article/update`, article, this.httpOptions).subscribe();
+      this.httpClient.put<Content>(`${this.api}/content/update`, content, this.httpOptions).subscribe();
     } else {
       article = {
         ...article,
         publishDate: today,
         modifiedDate: today
       }
-      this.httpClient.post<Article>(`${this.api}/article`, article, this.httpOptions).subscribe(article => {
+      this.httpClient.post<Article>(`${this.api}/article/add`, article, this.httpOptions).subscribe(article => {
         const content: Content = {
           articleId: article.articleId,
           content: contentObj.content
         }
-        this.httpClient.post<Content>(`${this.api}/content`, content, this.httpOptions).subscribe();
+        this.httpClient.post<Content>(`${this.api}/content/add`, content, this.httpOptions).subscribe();
       });
       
     }
