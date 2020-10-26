@@ -1,4 +1,7 @@
-<div *ngIf="this.tableOfContent && this.tableOfContent.size > 0; else loadBlock">
+<div *ngIf="this.tableOfContent; else loadBlock">
+    <div *ngIf="this.tableOfContent.size == 0">
+        There is no Article at the moment
+    </div>
     <a *ngIf="this.editorView" routerLink="/article/edit/new">
         New Blog
     </a>
