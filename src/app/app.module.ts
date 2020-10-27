@@ -10,6 +10,7 @@ import { DisplayPanelComponent } from './components/display-panel/display-panel.
 import { ArticleComponent } from './components/article/article.component';
 import { MarkdownPipe } from './markdown.pipe';
 import { EditFormComponent } from './components/edit-form/edit-form.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { EditFormComponent } from './components/edit-form/edit-form.component';
     DisplayPanelComponent,
     ArticleComponent,
     MarkdownPipe,
-    EditFormComponent
+    EditFormComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

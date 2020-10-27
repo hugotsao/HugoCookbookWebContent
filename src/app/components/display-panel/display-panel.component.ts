@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DataStoreService } from '../../data-store.service';
+import { AuthenticationService } from '../../authentication.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article, Content } from '../../data-structures';
 import { FormGroup, FormBuilder, FormArray, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { Input } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-display-panel',
@@ -20,6 +21,7 @@ export class DisplayPanelComponent implements OnInit {
   
   constructor(
     private dataStoreService: DataStoreService,
+    public authenticator: AuthenticationService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) { }

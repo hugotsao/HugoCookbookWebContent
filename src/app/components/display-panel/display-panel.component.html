@@ -10,7 +10,10 @@
 
 
 <ng-template #editPanel>
-    <app-edit-form [form]="this.editForm"></app-edit-form>
+    <div [hidden]="this.authenticator.authenticated">You do not have access to editor panel</div>
+    <div [hidden]="!this.authenticator.authenticated">
+        <app-edit-form [form]="this.editForm"></app-edit-form>
+    </div>
 </ng-template>
 
 
