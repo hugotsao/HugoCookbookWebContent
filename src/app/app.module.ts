@@ -11,6 +11,7 @@ import { ArticleComponent } from './article/article.component';
 import { MarkdownPipe } from './markdown.pipe';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { LoginComponent } from './login/login.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
