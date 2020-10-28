@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DataStoreService } from '../../data-store.service';
-import { Article } from '../../data-structures';
+import { DataStoreService } from '../data-store.service';
+import { Article } from '../data-structures';
 
 @Component({
   selector: 'app-left-panel',

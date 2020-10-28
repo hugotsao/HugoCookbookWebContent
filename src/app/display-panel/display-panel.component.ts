@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DataStoreService } from '../../data-store.service';
-import { AuthenticationService } from '../../authentication.service';
+import { DataStoreService } from '../data-store.service';
+import { AuthenticationService } from '../authentication.service';
 import { ActivatedRoute } from '@angular/router';
-import { Article, Content } from '../../data-structures';
+import { Article, Content } from '../data-structures';
 import { FormGroup, FormBuilder, FormArray, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { Input } from '@angular/core';
 import { map } from 'rxjs/operators';
