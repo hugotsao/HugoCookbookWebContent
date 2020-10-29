@@ -26,7 +26,9 @@ export class DataStoreService {
   }
 
   fetchCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(`${this.api}/categories/get`);
+    return this.httpClient.get<Category[]>(`${this.api}/categories/get`).pipe(
+      shareReplay(1)
+    );
   }
 
   fetchArticles(): Observable<Article[]> {
@@ -80,14 +82,7 @@ export class DataStoreService {
     if (articleId === 'new') {
       return of({title: '', categoryId: ''} as Article);
     }
-    if(articleId === 'latest') {
-      return this.fetchArticles().pipe(
-        map(articles => articles[0])
-      )
-    }
-    return this.fetchArticles().pipe(
-      map(articles => articles.find(article => article.articleId === articleId))
-    )
+   return this.httpClient.get<Article>(`${this.api}/article/${articleId}/get`).pipe(shareReplay(1))
   }
   
   getLeftPanel(): Observable<Map<string, Article[]>> {

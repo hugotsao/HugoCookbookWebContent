@@ -2,7 +2,7 @@
     <div *ngIf="this.tableOfContent.size == 0">
         There is no Article at the moment
     </div>
-    <a *ngIf="this.editorView" routerLink="/article/edit/new">
+    <a *ngIf="this.editorView" routerLink="/article/new/edit">
         New Blog
     </a>
     <div *ngFor="let entry of this.tableOfContent | keyvalue">

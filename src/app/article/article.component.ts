@@ -14,7 +14,6 @@ export class ArticleComponent implements OnInit {
   ngOnInit(): void {
     this.editorView = this.router.url.search('edit') > -1;
     this.editUrl = this.editorView ? this.router.url : `${this.router.url}/edit`;
-    console.log(`edit link is ${this.editUrl}`);
   }
 
 }

@@ -10,14 +10,15 @@
 
 
 <ng-template #editPanel>
-    <div *ngIf="!this.dataStoreService.authenticated">
-        <app-login></app-login>
-    </div>
-    <div *ngIf="this.dataStoreService.authenticated">
-        <app-edit-form [form]="initEditForm()"></app-edit-form>
-    </div>
+    <div *ngIf="this.dataStoreService.authenticated then edit else login"></div>
 </ng-template>
 
+<ng-template #login>
+    <app-login></app-login>
+</ng-template>
+<ng-template #edit>
+    <app-edit-form [form]="editForm"></app-edit-form>
+</ng-template>
 
 <ng-template #loadBlock>
     There is currently no content.
