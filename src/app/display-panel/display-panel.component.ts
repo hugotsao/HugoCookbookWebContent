@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DataStoreService } from '../data-store.service';
-import { AuthenticationService } from '../authentication.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article, Content } from '../data-structures';
 import { FormGroup, FormBuilder, FormArray, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
@@ -16,12 +15,13 @@ import { Observable } from 'rxjs';
 export class DisplayPanelComponent implements OnInit {
   article: Article;
   content: Content;
+  articleId: string;
   @Input() editorView: boolean;
-  editForm: FormGroup;
+  //editForm: FormGroup;
+  authenticated: boolean
   
   constructor(
-    private dataStoreService: DataStoreService,
-    public authenticator: AuthenticationService,
+    public dataStoreService: DataStoreService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) { }
@@ -31,24 +31,27 @@ export class DisplayPanelComponent implements OnInit {
   }
   init() {
     this.route.paramMap.subscribe(paramMap => {
-      const articleId = paramMap.get('articleId');
-      this.dataStoreService.getDisplayContent(articleId)
+      this.articleId = paramMap.get('articleId');
+      this.dataStoreService.getDisplayContent(this.articleId)
      .subscribe(
       ([article, content]) => {
           this.article = article;
           this.content = content;
-          this.editForm = this.formBuilder.group({
-            article: this.formBuilder.group({
-              ...this.article,
-              tags: this.formBuilder.array(this.article.tags ? [this.article.tags] : []),
-              references: this.formBuilder.array(this.article.references ? [this.article.references]: [])
-            }, {asyncValidators: this.articleValidator(articleId)}),
-            content: this.formBuilder.group({
-              ...this.content
-            })
-          })
         }
       )
+    })
+  }
+
+  initEditForm(): FormGroup {
+    return this.formBuilder.group({
+      article: this.formBuilder.group({
+        ...this.article,
+        tags: this.formBuilder.array(this.article.tags ? [this.article.tags] : []),
+        references: this.formBuilder.array(this.article.references ? [this.article.references]: [])
+      }, {asyncValidators: this.articleValidator(this.articleId)}),
+      content: this.formBuilder.group({
+        ...this.content
+      })
     })
   }
 
@@ -63,10 +66,12 @@ export class DisplayPanelComponent implements OnInit {
     })
   }
 
+  /*
   get tags() {
     return this.editForm.get('tags') as FormArray
   }
   get references() {
     return this.editForm.get('references') as FormArray
   }
+  */
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Article, Category, Content } from './data-structures';
 import { HttpClient } from '@angular/common/http'
-import { Subject, Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { shareReplay } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { shareReplay } from 'rxjs/operators';
 export class DataStoreService {
   api = "http://localhost:8080/api";
 
-  contentSubject: Subject<Content> = new Subject();
+  authenticated: boolean = false;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -113,4 +113,21 @@ export class DataStoreService {
     return forkJoin([this.getArticleFromId(articleId), this.fetchContent(articleId)])
       .pipe(shareReplay(1))
   }
+
+  authenticate(credentials, callback) {
+
+    const headers = new HttpHeaders(credentials ? {
+        authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
+    } : {});
+
+    this.httpClient.get(`${this.api}/user/get`, {headers: headers}).subscribe(response => {
+        if (response['name']) {
+            this.authenticated = true;
+        } else {
+            this.authenticated = false;
+        }
+        return callback && callback();
+    });
+
+}
 }

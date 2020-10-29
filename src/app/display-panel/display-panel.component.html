@@ -10,9 +10,11 @@
 
 
 <ng-template #editPanel>
-    <div [hidden]="this.authenticator.authenticated">You do not have access to editor panel</div>
-    <div [hidden]="!this.authenticator.authenticated">
-        <app-edit-form [form]="this.editForm"></app-edit-form>
+    <div *ngIf="!this.dataStoreService.authenticated">
+        <app-login></app-login>
+    </div>
+    <div *ngIf="this.dataStoreService.authenticated">
+        <app-edit-form [form]="initEditForm()"></app-edit-form>
     </div>
 </ng-template>
 

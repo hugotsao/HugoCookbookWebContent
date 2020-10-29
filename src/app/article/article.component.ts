@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-article',
@@ -8,12 +8,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ArticleComponent implements OnInit {
   editorView: boolean;
-  constructor(private activatedRoute: ActivatedRoute) { }
+  editUrl: string;
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.activatedRoute.url.subscribe(url => {
-      this.editorView = url.toString().indexOf('edit') > 0;      
-    });
+    this.editorView = this.router.url.search('edit') > -1;
+    this.editUrl = this.editorView ? this.router.url : `${this.router.url}/edit`;
+    console.log(`edit link is ${this.editUrl}`);
   }
 
 }

@@ -12,7 +12,7 @@
             <a *ngIf="!this.editorView" [title]="article.title" [routerLink]="['/article', article.articleId]">
                 {{ article.title }}
             </a>
-            <a *ngIf="this.editorView" [title]="article.title" [routerLink]="['/article/edit', article.articleId]">
+            <a *ngIf="this.editorView" [title]="article.title" [routerLink]="['/article', article.articleId, 'edit']">
                 {{ article.title }}
             </a>
         </div>
