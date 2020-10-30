@@ -12,12 +12,11 @@ import { shareReplay } from 'rxjs/operators';
 })
 export class DataStoreService {
   api = "http://localhost:8080/api";
-
+  sessionToken: string ="";
   authenticated: boolean = false;
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      Authorization: 'my-auth-token'
+      'Content-Type':  'application/json'
     })
   };
   constructor(
@@ -67,13 +66,20 @@ export class DataStoreService {
         publishDate: today,
         modifiedDate: today
       }
-      this.httpClient.post<Article>(`${this.api}/article/add`, article, this.httpOptions).subscribe(article => {
-        const content: Content = {
-          articleId: article.articleId,
-          content: contentObj.content
+      this.httpClient.get(`${this.api}/token/get`).subscribe(
+        response => {
+          const token = response['token']
+          this.httpClient.post<Article>(`${this.api}/article/add`, article, {headers : new HttpHeaders().set('X-Auth-Token', token)})
+            .subscribe(article => {
+              const content: Content = {
+                articleId: article.articleId,
+                content: contentObj.content
+              }
+            this.httpClient.post<Content>(`${this.api}/content/add`, content, {headers : new HttpHeaders().set('X-Auth-Token', token)}).subscribe();
+          });
         }
-        this.httpClient.post<Content>(`${this.api}/content/add`, content, this.httpOptions).subscribe();
-      });
+      )
+      
       
     }
     
