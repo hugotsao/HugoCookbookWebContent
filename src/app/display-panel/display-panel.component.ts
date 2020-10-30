@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DataStoreService } from '../data-store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article, Content } from '../data-structures';
-import { FormGroup, FormBuilder, FormArray, ValidationErrors, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Input } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-display-panel',
@@ -52,8 +50,8 @@ export class DisplayPanelComponent implements OnInit {
     this.editForm = this.formBuilder.group({
       article: this.formBuilder.group({
         ...this.article,
-        tags: this.formBuilder.array(this.article.tags ? [this.article.tags] : []),
-        references: this.formBuilder.array(this.article.references ? [this.article.references]: [])
+        tags: this.formBuilder.array(this.article ? [this.article.tags] : []),
+        references: this.formBuilder.array(this.article ? [this.article.references]: [])
       }, {validators: this.articleValidator}),
       content: this.formBuilder.group({
         ...this.content

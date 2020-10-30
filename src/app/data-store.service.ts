@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Article, Category, Content } from './data-structures';
 import { HttpClient } from '@angular/common/http'
 import { Observable, of, forkJoin } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, filter, skipWhile } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { shareReplay } from 'rxjs/operators';
 
@@ -42,7 +42,7 @@ export class DataStoreService {
       return of({content: ''} as Content);
     }
     return this.getArticleFromId(id).pipe(
-      switchMap(article => this.httpClient.get<Content>(`${this.api}/content/${article.articleId}/get`))
+      switchMap(article => article === null ? of({content: ''} as Content) : this.httpClient.get<Content>(`${this.api}/content/${article.articleId}/get`))
     )
   }
 
@@ -82,7 +82,7 @@ export class DataStoreService {
     if (articleId === 'new') {
       return of({title: '', categoryId: ''} as Article);
     }
-   return this.httpClient.get<Article>(`${this.api}/article/${articleId}/get`).pipe(shareReplay(1))
+   return this.httpClient.get<Article>(`${this.api}/article/${articleId}/get`)
   }
   
   getLeftPanel(): Observable<Map<string, Article[]>> {
