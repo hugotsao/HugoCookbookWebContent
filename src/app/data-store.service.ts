@@ -14,7 +14,7 @@ export class DataStoreService {
   api = "http://localhost:8080/api";
   sessionToken: string ="";
   authenticated: boolean = false;
-  authenticationHeader =  new HttpHeaders({
+  httpHeaders =  new HttpHeaders({
       'Content-Type':  'application/json'
     });
   constructor(
@@ -56,29 +56,22 @@ export class DataStoreService {
         ...article,
         modifiedDate: today
       }
-      this.httpClient.put<Article>(`${this.api}/article/update`, article, {headers: this.authenticationHeader}).subscribe();
-      this.httpClient.put<Content>(`${this.api}/content/update`, content, {headers: this.authenticationHeader}).subscribe();
+      this.httpClient.put<Article>(`${this.api}/article/update`, article, {headers: this.httpHeaders}).subscribe();
+      this.httpClient.put<Content>(`${this.api}/content/update`, content, {headers: this.httpHeaders}).subscribe();
     } else {
       article = {
         ...article,
         publishDate: today,
         modifiedDate: today
       }
-      this.httpClient.get(`${this.api}/token/get`).subscribe(
-        response => {
-          const token = response['token']
-          this.httpClient.post<Article>(`${this.api}/article/add`, article, {headers: this.authenticationHeader})
-            .subscribe(article => {
-              const content: Content = {
-                articleId: article.articleId,
-                content: contentObj.content
-              }
-            this.httpClient.post<Content>(`${this.api}/content/add`, content, {headers: this.authenticationHeader}).subscribe();
-          });
-        }
-      )
-      
-      
+      this.httpClient.post<Article>(`${this.api}/article/add`, article, {headers: this.httpHeaders})
+        .subscribe(article => {
+          const content: Content = {
+            articleId: article.articleId,
+            content: contentObj.content
+          }
+        this.httpClient.post<Content>(`${this.api}/content/add`, content, {headers: this.httpHeaders}).subscribe();
+      })
     }
     
  }
@@ -114,15 +107,14 @@ export class DataStoreService {
   }
 
   authenticate(credentials, callback) {
-    const headername = 'authorization'
-    const headervalue = credentials ? 'Basic ' + btoa(credentials.username + ':' + credentials.password) : undefined
-    const headers = new HttpHeaders(headervalue ? {
-        authorization : headervalue
-    } : {});
+    
+    const headers = new HttpHeaders(credentials ? {
+      authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
+  } : {});
 
     this.httpClient.get(`${this.api}/user/get`, {headers: headers}).subscribe(response => {
         if (response['name']) {
-          this.authenticationHeader = this.authenticationHeader.set(headername, headervalue)
+          this.httpHeaders = this.httpHeaders.set('authorization', headers.get("authorization"))
           this.authenticated = true;
         } else {
             this.authenticated = false;
