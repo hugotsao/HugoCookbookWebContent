@@ -39,8 +39,9 @@ export class DataStoreService {
       return of({content: ''} as Content);
     }
     return this.getArticleFromId(id).pipe(
-      switchMap(article => article === null ? of({content: ''} as Content) : this.httpClient.get<Content>(`${this.api}/content/${article.articleId}/get`))
-    )
+      switchMap(article => article === null ? of({content: ''} as Content) : this.httpClient.get<Content>(`${this.api}/content/${article.articleId}/get`)),
+      shareReplay(1)
+      )      
   }
 
   createOrUpdateContent(formdata: any){
@@ -108,13 +109,15 @@ export class DataStoreService {
 
   authenticate(credentials, callback) {
     
-    const headers = new HttpHeaders(credentials ? {
-      authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
-  } : {});
+    const authenticationRequest = {
+      username: credentials.username,
+      password: credentials.password
+    }
 
-    this.httpClient.get(`${this.api}/user/get`, {headers: headers}).subscribe(response => {
-        if (response['name']) {
-          this.httpHeaders = this.httpHeaders.set('authorization', headers.get("authorization"))
+    this.httpClient.post(`${this.api}/authentication`, authenticationRequest, {headers: this.httpHeaders})
+    .subscribe(response => {
+        if (response['token']) {
+          this.httpHeaders = this.httpHeaders.set('authorization', `Bearer ${response['token']}`)
           this.authenticated = true;
         } else {
             this.authenticated = false;
